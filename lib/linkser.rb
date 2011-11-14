@@ -1,5 +1,7 @@
 require "linkser/version"
 
 module Linkser
-  # Your code goes here...
+  def self.parse
+    return "Jaja"
+  end
 end
