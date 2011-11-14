@@ -7,9 +7,9 @@ Gem::Specification.new do |s|
   s.version     = Linkser::VERSION
   s.authors     = ["Eduardo Casanova"]
   s.email       = ["ecasanovac@gmail.com"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.homepage    = "https://github.com/ging/linkser"
+  s.summary     = "TODO"
+  s.description = "TODO"
 
   s.rubyforge_project = "linkser"
 
