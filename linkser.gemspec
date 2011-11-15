@@ -20,9 +20,13 @@ Gem::Specification.new do |s|
 
   # Gem dependencies
   #
+  s.add_runtime_dependency('nokogiri', '>= 1.5.0')
+  s.add_runtime_dependency('rails', '>= 3.1.0')
+  s.add_runtime_dependency('rmagick', '>= 2.13.1')
+  s.add_runtime_dependency('ruby-imagespec', ">= 0.2.0")  
+  
   # Development Gem dependencies
   #
-  s.add_runtime_dependency('rails', '>= 3.1.0')
   # Testing database
   s.add_development_dependency('sqlite3-ruby')
   # Debugging
