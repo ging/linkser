@@ -21,22 +21,15 @@ Gem::Specification.new do |s|
   # Gem dependencies
   #
   s.add_runtime_dependency('nokogiri', '>= 1.5.0')
-  s.add_runtime_dependency('rails', '>= 3.1.0')
   s.add_runtime_dependency('rmagick', '>= 2.13.1')
   s.add_runtime_dependency('ruby-imagespec', ">= 0.2.0")  
   
   # Development Gem dependencies
   #
-  # Testing database
-  s.add_development_dependency('sqlite3-ruby')
   # Debugging
   if RUBY_VERSION < '1.9'
     s.add_development_dependency('ruby-debug', '>= 0.10.3')
   end
   # Specs
-  s.add_development_dependency('rspec-rails', '>= 2.6.1')
-  # Fixtures
-  s.add_development_dependency('factory_girl', '>= 1.3.2')
-  # Integration testing
-  s.add_development_dependency('capybara', '>= 0.3.9')
+  s.add_development_dependency('rspec', '>= 2.7.0')
 end

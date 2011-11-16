@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'linkser'
 
 describe Linkser do
   it "should be valid" do
