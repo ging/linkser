@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
 
   # Gem dependencies
   #
+  s.add_runtime_dependency('rake')
   s.add_runtime_dependency('nokogiri', '>= 1.5.0')
   s.add_runtime_dependency('rmagick', '>= 2.13.1')
   s.add_runtime_dependency('ruby-imagespec', ">= 0.2.0")  
