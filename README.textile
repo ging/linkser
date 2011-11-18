@@ -1,6 +1,6 @@
 h1. Linkser "!https://secure.travis-ci.org/ging/linkser.png!":http://travis-ci.org/ging/linkser
 
-Linkser is a link parser. It gets an URI, dereferences it and returns the relevant information about the resource.
+Linkser is a link parser for Ruby. It gets an URI, tries to dereference it and returns the relevant information about the resource.
 
 h2. Installation
 
