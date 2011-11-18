@@ -1,6 +1,6 @@
 h1. Linkser "!https://secure.travis-ci.org/ging/linkser.png!":http://travis-ci.org/ging/linkser
 
-#TODO
+Linkser is a link parser. It gets an URI, dereferences it and returns the relevant information about the resource.
 
 h2. Installation
 
@@ -12,7 +12,7 @@ h2. Using Mailboxer.
 
 h2. License
 
-Copyright (c) 2011 Eduardo Casanova Cuesta
+Copyright (c) 2011 Universidad Politécnica de Madrid
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
