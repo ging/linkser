@@ -8,10 +8,10 @@ Gem::Specification.new do |s|
   s.authors     = ["Eduardo Casanova"]
   s.email       = ["ecasanovac@gmail.com"]
   s.homepage    = "https://github.com/ging/linkser"
-  s.summary     = "TODO"
-  s.description = "TODO"
+  s.summary     = "A link parser for Ruby"
+  s.description = "Linkser is a link parser for Ruby. It gets an URI, tries to dereference it and returns the relevant information about the resource."
 
-  s.rubyforge_project = "linkser"
+  # s.rubyforge_project = "linkser"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
