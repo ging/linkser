@@ -8,3 +8,5 @@ module Linkser
     end
   end
 end
+
+require 'linkser/objects/html'

@@ -1,10 +1,12 @@
 require 'linkser/version'
 
 module Linkser
-  autoload :Parser, 'linkser/parser'
-  autoload :Object, 'linkser/object'
-  module Objects
-    autoload :HTML, 'linkser/objects/html'
+  class << self
+    def parse(url, options = {})
+      Linkser::Parser.new(url, options).object
+    end
   end
 end
 
+require 'linkser/parser'
+require 'linkser/object'

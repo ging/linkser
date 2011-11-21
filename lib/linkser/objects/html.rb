@@ -7,8 +7,6 @@ require 'opengraph'
 module Linkser
   module Objects
     class HTML < Linkser::Object
-      attr_reader :body, :nokogiri
-      attr_reader :title, :description, :images, :ogp
       def initialize url, head, options={}
         super url, head, options
       end
@@ -22,11 +20,13 @@ module Linkser
             @title = title.text
           end
         end          
+
         @title
       end
 
       def body
         return @body unless @body.nil?
+
         @body = open(url)
       end
 
@@ -41,6 +41,7 @@ module Linkser
             end
           end
         end
+
         @description
       end
 
