@@ -2,8 +2,9 @@ require 'linkser/version'
 
 module Linkser
   autoload :Parser, 'linkser/parser'
-  module Parser
-    autoload :HTML, 'linkser/parser/html'
+  autoload :Object, 'linkser/object'
+  module Objects
+    autoload :HTML, 'linkser/objects/html'
   end
 end
 
