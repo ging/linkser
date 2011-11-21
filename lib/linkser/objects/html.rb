@@ -7,92 +7,68 @@ require 'opengraph'
 module Linkser
   module Objects
     class HTML < Linkser::Object
-      def initialize url, head, options={}
-        super url, head, options
-      end
 
       def title
-        return @title unless @title.nil?
-        if ogp and ogp.title
-           @title = ogp.title
-        else
-          nokogiri.css('title').each do |title|
-            @title = title.text
-          end
-        end          
-
-        @title
-      end
-
-      def body
-        return @body unless @body.nil?
-
-        @body = open(url)
+        ogp && ogp.title ||
+          nokogiri.css('title').first.try(:text)
       end
 
       def description
-        return @description unless @description.nil?
-        if ogp and ogp.description
-           @description = ogp.description
-        else
-          nokogiri.css('meta').each do |meta|
-            if meta.get_attribute("name").eql? "description"
-              @description = meta.get_attribute("content")
-            end
-          end
-        end
-
-        @description
+        ogp && ogp.description ||
+          nokogiri.css('meta').find { |meta|
+            meta.get_attribute("name").eql? "description"
+          }.get_attribute("content")
       end
 
       def images
-        return @images unless @images.nil?
-        @images = Array.new
-        if ogp and ogp.image
-          begin
-            img_spec = ImageSpec.new(ogp.image)
-            if valid_img? img_spec.width.to_f, img_spec.height.to_f
-              @images << {:img => ogp.image, :width => img_spec.width, :height => img_spec.height}
-            end
-          rescue
-          end
-        end        
-        nokogiri.css('img').each do |img|
-          img_src = img.get_attribute("src")
-          img_src = complete_url img_src, url
-          img_uri = URI.parse(img_src)
-          img_ext = File.extname(img_uri.path)
-          img_name = File.basename(img_uri.path,img_ext)
-          if [".jpg", ".jpeg", ".png"].include? img_ext
+        Array.new.tap do |images|
+          if ogp and ogp.image
             begin
-              img_spec = ImageSpec.new(img_src)
+              img_spec = ImageSpec.new(ogp.image)
               if valid_img? img_spec.width.to_f, img_spec.height.to_f
-                @images << {:img => img_src, :width => img_spec.width, :height => img_spec.height}
+                images << {:img => ogp.image, :width => img_spec.width, :height => img_spec.height}
               end
             rescue
             end
+          end        
+
+          nokogiri.css('img').each do |img|
+            img_src = img.get_attribute("src")
+            img_src = complete_url img_src, url
+            img_uri = URI.parse(img_src)
+            img_ext = File.extname(img_uri.path)
+            img_name = File.basename(img_uri.path,img_ext)
+
+            if [".jpg", ".jpeg", ".png"].include? img_ext
+              begin
+                img_spec = ImageSpec.new(img_src)
+                if valid_img? img_spec.width.to_f, img_spec.height.to_f
+                  images << {:img => img_src, :width => img_spec.width, :height => img_spec.height}
+                end
+              rescue
+              end
+            end
           end
-        end
-        @images
-      end      
+        end      
+      end
 
       def nokogiri
-        return @nokogiri unless @nokogiri.nil?
-        @nokogiri = Nokogiri::HTML(body)
+        Nokogiri::HTML(body)
       end
 
       def ogp
-        return @ogp unless @ogp.nil?
-        @ogp = OpenGraph::Object.new
+        ogp = OpenGraph::Object.new
         nokogiri.css('meta').each do |m|
           if m.attribute('property') && m.attribute('property').to_s.match(/^og:(.+)$/i)
-            @ogp[$1.gsub('-','_')] = m.attribute('content').to_s
+            ogp[$1.gsub('-','_')] = m.attribute('content').to_s
           end
         end
-        @ogp = false if @ogp.keys.empty?
-        @ogp = false unless @ogp.valid?  
-        @ogp 
+        ogp = false if ogp.keys.empty? || !ogp.valid?
+        ogp
       end
+
+      memoize :nokogiri, :ogp,
+              :title, :description, :images
 
       private
 

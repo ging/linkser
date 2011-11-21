@@ -1,3 +1,4 @@
+require 'active_support'
 require 'linkser/version'
 
 module Linkser
