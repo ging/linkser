@@ -4,10 +4,8 @@ require 'net/http'
 module Linkser
   module Parser
     def self.parse url, options={}
-      if !is_valid_url? url
-        raise "Invalid URL"
-      end
       head = get_head url
+
       case head.content_type
       when "text/html"
         Linkser::Objects::HTML.new url, head
@@ -32,19 +30,6 @@ module Linkser
         return get_head location, limit - 1
       else
       raise 'The HTTP request has a ' + response.code + ' code'
-      end
-    end
-
-    def self.is_valid_url? url
-      begin
-        uri = URI.parse(url)
-        if [:scheme, :host].any? { |i| uri.send(i).blank? }
-        raise URI::InvalidURIError 
-        end
-        return true
-      rescue URI::InvalidURIError => e
-         warn e.to_s
-      return false
       end
     end
   end
