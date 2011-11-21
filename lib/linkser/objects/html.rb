@@ -10,14 +10,14 @@ module Linkser
 
       def title
         ogp && ogp.title ||
-          nokogiri.css('title').first.try(:text)
+          (e = nokogiri.css('title')).first && e.text
       end
 
       def description
         ogp && ogp.description ||
-          nokogiri.css('meta').find { |meta|
-            meta.get_attribute("name").eql? "description"
-          }.get_attribute("content")
+          (e = nokogiri.css('meta').find { |meta|
+                 meta.get_attribute("name").eql? "description"
+               }) && e.get_attribute("content")
       end
 
       def images
