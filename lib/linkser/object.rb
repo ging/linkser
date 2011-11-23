@@ -20,3 +20,4 @@ module Linkser
 end
 
 require 'linkser/objects/html'
+require 'linkser/objects/youtube'
