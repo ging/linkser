@@ -6,7 +6,7 @@ module Linkser
     
     def initialize url, head, options={}
       @url = url
-      @heade = head
+      @head = head
     end
 
     def body
