@@ -7,7 +7,7 @@ module Linkser
     attr_reader :object
 
     def initialize url, options={}
-      head = get_head url
+      head = get_head url, options
 
       @object =
         case head.content_type
@@ -20,13 +20,15 @@ module Linkser
 
     private
 
-    def get_head url, limit = 10
+    def get_head url, options, limit = 10
       raise 'Too many HTTP redirects. URL was not reacheable within the HTTP redirects limit' if (limit==0)
       uri = URI.parse url
       if uri.scheme and (uri.scheme.eql? "http" or uri.scheme.eql? "https")
         http = Net::HTTP.new uri.host, uri.port
         if uri.scheme.eql? "https"
-          http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          unless options[:ssl_verify]==true
+            http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+          end
           http.use_ssl = true
         end
       else
@@ -40,7 +42,7 @@ module Linkser
         when Net::HTTPRedirection then
           location = response['location']
           warn "Redirecting to #{location}"
-          return get_head location, limit - 1
+          return get_head location, options, limit - 1
         else
         raise 'The HTTP request has a ' + response.code + ' code'
         end

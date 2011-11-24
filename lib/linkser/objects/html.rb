@@ -26,7 +26,7 @@ module Linkser
             begin
               img_spec = ImageSpec.new(ogp.image)
               if valid_img? img_spec.width.to_f, img_spec.height.to_f
-                images << {:img => ogp.image, :width => img_spec.width, :height => img_spec.height}
+                images << Linkser::Resource.new({:type => "image", :url => ogp.image, :width => img_spec.width, :height => img_spec.height})
               end
             rescue
             end
@@ -43,7 +43,7 @@ module Linkser
               begin
                 img_spec = ImageSpec.new(img_src)
                 if valid_img? img_spec.width.to_f, img_spec.height.to_f
-                  images << {:img => img_src, :width => img_spec.width, :height => img_spec.height}
+                  images << Linkser::Resource.new({:type => "image", :url => img_src, :width => img_spec.width, :height => img_spec.height})
                 end
               rescue
               end
@@ -66,9 +66,13 @@ module Linkser
         ogp = false if ogp.keys.empty? || !ogp.valid?
         ogp
       end
+      
+      def resource 
+        Linkser::Resource.new ogp
+      end
 
       memoize :nokogiri, :ogp,
-              :title, :description, :images
+              :title, :description, :images, :resource
 
       private
 

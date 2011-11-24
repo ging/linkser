@@ -11,3 +11,4 @@ end
 
 require 'linkser/parser'
 require 'linkser/object'
+require 'linkser/resource'
