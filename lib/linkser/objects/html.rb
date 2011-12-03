@@ -1,6 +1,4 @@
 require 'nokogiri'
-require 'open-uri'
-require 'net/http'
 require 'image_spec'
 require 'opengraph'
 
@@ -33,6 +31,7 @@ module Linkser
           end        
 
           nokogiri.css('img').each do |img|
+            break if images.length >= 5
             img_src = img.get_attribute("src")
             img_src = complete_url img_src, url
             img_uri = URI.parse(img_src)
@@ -90,7 +89,7 @@ module Linkser
       end
 
       def valid_img? w, h
-        if w > 199 or w > 199
+        if w > 199 or h > 199
           if ((w > 0 and h > 0 and ((w / h) < 3) and ((w / h) > 0.2)) or (w > 0 and h == 0 and w < 700) or (w == 0 and h > 0 and h < 700))
           return true
           end

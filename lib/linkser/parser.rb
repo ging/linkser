@@ -1,10 +1,9 @@
-require 'open-uri'
 require 'net/http'
 require 'net/https'
 
 module Linkser
   class Parser
-    attr_reader :object
+    attr_reader :object, :last_url
 
     def initialize url, options={}
       head = get_head url, options
@@ -12,9 +11,9 @@ module Linkser
       @object =
         case head.content_type
         when "text/html"
-          Linkser::Objects::HTML.new url, head
+          Linkser::Objects::HTML.new url, last_url, head
         else
-          Linkser::Object.new url, head
+          Linkser::Object.new url, last_url, head
         end
     end
 
@@ -22,6 +21,7 @@ module Linkser
 
     def get_head url, options, limit = 10
       raise 'Too many HTTP redirects. URL was not reacheable within the HTTP redirects limit' if (limit==0)
+      @last_url = url
       uri = URI.parse url
       if uri.scheme and (uri.scheme.eql? "http" or uri.scheme.eql? "https")
         http = Net::HTTP.new uri.host, uri.port
