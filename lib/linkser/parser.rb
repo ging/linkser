@@ -11,9 +11,9 @@ module Linkser
       @object =
         case head.content_type
         when "text/html"
-          Linkser::Objects::HTML.new url, last_url, head
+          Linkser::Objects::HTML.new url, last_url, head, options
         else
-          Linkser::Object.new url, last_url, head
+          Linkser::Object.new url, last_url, head, options
         end
     end
 

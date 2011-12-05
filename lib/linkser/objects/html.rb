@@ -19,6 +19,7 @@ module Linkser
       end
 
       def images
+        max_images = @options[:max_images] || 5
         Array.new.tap do |images|
           if ogp and ogp.image
             begin
@@ -31,7 +32,7 @@ module Linkser
           end        
 
           nokogiri.css('img').each do |img|
-            break if images.length >= 5
+            break if images.length >= max_images
             img_src = img.get_attribute("src")
             img_src = complete_url img_src, url
             img_uri = URI.parse(img_src)
