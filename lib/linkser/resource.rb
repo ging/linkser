@@ -12,6 +12,18 @@ module Linkser
           @width = obj[@type + ":width"] if obj[@type + ":width"]
           @height = obj[@type + ":height"] if obj[@type + ":height"]
         end
+        if @url.nil?
+          ["video","audio"].each do |type|
+            @url = obj[type] if obj[type]
+            @url = obj[type + ":url"] if @url.nil? and obj[type + ":url"]
+            @width = obj[type + ":width"] if obj[type + ":width"]
+            @height = obj[type + ":height"] if obj[type + ":height"]
+            if @url
+              @type = type
+              break
+            end
+          end
+        end
       when Hash
         @type = obj[:type] if obj[:type]
         @url = obj[:url] if obj[:url]
