@@ -68,7 +68,8 @@ module Linkser
       end
       
       def resource 
-        Linkser::Resource.new ogp
+        return Linkser::Resource.new ogp if ogp
+        return nil
       end
 
       memoize :nokogiri, :ogp,
