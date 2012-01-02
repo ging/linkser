@@ -24,7 +24,7 @@ module Linkser
           if ogp and ogp.image
             begin
               img_spec = ImageSpec.new(ogp.image)
-              if valid_img? img_spec.width.to_f, img_spec.height.to_f and can_hotlink_img? ogp.image
+              if valid_img?(img_spec.width.to_f, img_spec.height.to_f) and can_hotlink_img?(ogp.image)
                 images << Linkser::Resource.new({:type => "image", :url => ogp.image, :width => img_spec.width, :height => img_spec.height})
               end
             rescue
@@ -42,7 +42,7 @@ module Linkser
             if [".jpg", ".jpeg", ".png"].include? img_ext
               begin
                 img_spec = ImageSpec.new(img_src)
-                if valid_img? img_spec.width.to_f, img_spec.height.to_f and can_hotlink_img? img_src
+                if valid_img?(img_spec.width.to_f, img_spec.height.to_f) and can_hotlink_img?(img_src)
                   images << Linkser::Resource.new({:type => "image", :url => img_src, :width => img_spec.width, :height => img_spec.height})
                 end
               rescue
@@ -100,11 +100,11 @@ module Linkser
       end
 
       def can_hotlink_img? url, limit=10
+	return false if limit < 0
         uri = URI.parse(url)
         http = Net::HTTP.new uri.host, uri.port
         http.start do |agent|
-            agent.add_field 'Referrer', 'http://www.linkser.com/'
-            response = agent.head uri.request_uri
+            response = agent.head uri.request_uri, { 'Referrer' => 'http://www.linkser.com/' }
             case response
             when Net::HTTPSuccess then
                 return true
