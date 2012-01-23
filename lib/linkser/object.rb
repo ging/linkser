@@ -3,9 +3,8 @@ require 'net/https'
 
 module Linkser
   class Object
-    extend ActiveSupport::Memoizable
-
     attr_reader :url, :last_url, :head
+
     def initialize url, last_url, head, options={}
       @url = url
       @last_url = last_url
@@ -14,6 +13,10 @@ module Linkser
     end
 
     def body
+      @body ||= build_body
+    end
+
+    def build_body
       uri = URI.parse last_url
       if uri.scheme and (uri.scheme.eql? "http" or uri.scheme.eql? "https")
         http = Net::HTTP.new uri.host, uri.port
@@ -32,9 +35,6 @@ module Linkser
         return response.body
       end
     end
-
-    memoize :body
-
   end
 end
 

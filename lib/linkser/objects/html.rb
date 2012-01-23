@@ -7,18 +7,44 @@ module Linkser
     class HTML < Linkser::Object
 
       def title
+        @title ||= build_title
+      end
+
+      def description
+        @description ||= build_description
+      end
+
+      def images
+        @images ||= build_images
+      end
+
+      def nokogiri
+        @nokogiri ||= Nokogiri::HTML(body)
+      end
+
+      def ogp
+        @ogp ||= build_ogp
+      end
+
+      def resource
+        @resource ||= build_resource
+      end
+
+      protected 
+
+      def build_title
         ogp && ogp.title ||
           (e = nokogiri.css('title')).first && e.text
       end
 
-      def description
+      def build_description
         ogp && ogp.description ||
           (e = nokogiri.css('meta').find { |meta|
                  meta.get_attribute("name").eql? "description"
                }) && e.get_attribute("content")
       end
 
-      def images
+      def build_images
         max_images = @options[:max_images] || 5
         Array.new.tap do |images|
           if ogp and ogp.image
@@ -52,11 +78,7 @@ module Linkser
         end      
       end
 
-      def nokogiri
-        Nokogiri::HTML(body)
-      end
-
-      def ogp
+      def build_ogp
         ogp = OpenGraph::Object.new
         nokogiri.css('meta').each do |m|
           if m.attribute('property') && m.attribute('property').to_s.match(/^og:(.+)$/i)
@@ -66,14 +88,10 @@ module Linkser
         ogp = false if ogp.keys.empty? || !ogp.valid?
         ogp
       end
-      
-      def resource 
-        return Linkser::Resource.new ogp if ogp
-        return nil
-      end
 
-      memoize :nokogiri, :ogp,
-              :title, :description, :images, :resource
+      def build_resource 
+        Linkser::Resource.new ogp if ogp
+      end
 
       private
 
