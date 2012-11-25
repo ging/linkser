@@ -60,7 +60,7 @@ module Linkser
           nokogiri.css('img').each do |img|
             break if images.length >= max_images
             img_src = img.get_attribute("src")
-            img_src = complete_url img_src, url
+            img_src = complete_url img_src, last_url
             img_uri = URI.parse(img_src)
             img_ext = File.extname(img_uri.path)
             img_name = File.basename(img_uri.path,img_ext)
@@ -97,9 +97,10 @@ module Linkser
 
       def complete_url src, url
         uri = URI.parse(url)
-        base_url = "http://" + uri.host + (uri.port!=80 ? ":" + uri.port.to_s : "")
-        relative_url = "http://" + uri.host + (uri.port!=80 ? ":" + uri.port.to_s : "") + uri.path
-        if src.index("http://")==0
+        scheme = "#{uri.scheme}://"
+        base_url = scheme + uri.host + (uri.port!=80 ? ":" + uri.port.to_s : "")
+        relative_url = scheme + uri.host + (uri.port!=80 ? ":" + uri.port.to_s : "") + uri.path
+        if src.index(scheme)==0
           src
         elsif src.index("/")==0
           base_url + src
