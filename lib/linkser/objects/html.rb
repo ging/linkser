@@ -60,6 +60,7 @@ module Linkser
           nokogiri.css('img').each do |img|
             break if images.length >= max_images
             img_src = img.get_attribute("src")
+            next unless img_src
             img_src = complete_url img_src, last_url
             img_uri = URI.parse(img_src)
             img_ext = File.extname(img_uri.path)
