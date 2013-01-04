@@ -106,7 +106,7 @@ module Linkser
         elsif src.index("/")==0
           base_url + src
         else
-          relative_url + src
+          URI.join(relative_url, src).to_s
         end
       end
 
