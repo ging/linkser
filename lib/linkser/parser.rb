@@ -7,7 +7,6 @@ module Linkser
 
     def initialize url, options={}
       head = get_head url, options
-
       @object =
         case head.content_type
         when "text/html"
@@ -41,6 +40,7 @@ module Linkser
           return response
         when Net::HTTPRedirection then
           location = response['location']
+          location = "#{uri.scheme}://#{uri.host}:#{uri.port}#{location}" if location.start_with?("/")
           warn "Redirecting to #{location}"
           return get_head location, options, limit - 1
         else
